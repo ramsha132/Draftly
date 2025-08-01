@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -7,14 +7,9 @@ const blogSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
-    require:true
-  }
+    ref: "User",
+    require: true,
+  },
 });
 
-
-
-module.exports = mongoose.model('Blog', blogSchema);
-
-
-
+module.exports = mongoose.model("Blog", blogSchema);

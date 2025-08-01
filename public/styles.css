@@ -8,7 +8,7 @@
   --outer-space: #495057;
   --onyx: #343a40;
   --eerie-black: #212529;
-  --font-main: 'Poppins', sans-serif;
+  --font-main: "Poppins", sans-serif;
 }
 
 * {
@@ -165,7 +165,6 @@ button:hover {
   padding-bottom: 0.5rem;
 }
 
-
 .blog-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -220,7 +219,6 @@ button:hover {
   background-color: var(--eerie-black);
 }
 
-
 .action-icon {
   background: none;
   border: none;
@@ -244,14 +242,13 @@ button:hover {
   color: darkred;
 }
 
-
 .view-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 4rem 2rem;
   background-color: #f8f9fa;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .view-box {
@@ -288,7 +285,7 @@ button:hover {
 }
 
 .view-content {
-  font-size: 1.25rem; 
+  font-size: 1.25rem;
   line-height: 2.1;
   color: var(--outer-space);
   white-space: pre-wrap;
@@ -309,9 +306,6 @@ button:hover {
   color: var(--eerie-black);
   border-bottom-color: var(--eerie-black);
 }
-
-
-
 
 .add-form {
   display: flex;

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
 const Blog = require("../models/blog.model");
-const bcrypt = require("bcrypt"); // assuming you're using bcrypt
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 const {
@@ -78,7 +78,7 @@ router.get("/my-blogs", jwtAuthMiddleware, async (req, res) => {
     const user = await User.findById(req.user.id);
     const myBlogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
 
-    res.render("my-blogs", { blogs: myBlogs }); // Render EJS view with user's blogs
+    res.render("my-blogs", { blogs: myBlogs });
   } catch (error) {
     console.error("Error fetching user's blogs:", error);
     res.status(500).send("Server error");
@@ -127,7 +127,7 @@ router.get("/blogs/edit/:id", jwtAuthMiddleware, async (req, res) => {
       return res.status(403).send("Not allowed to edit this blog");
     }
 
-    res.render("edit", { blog }); // Make sure edit-blog.ejs exists
+    res.render("edit", { blog });
   } catch (err) {
     res.status(500).send("Server error");
   }

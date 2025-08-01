@@ -2,7 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-app.use(cookieParser()); // <== the most IMPORTANT
+app.use(cookieParser());
 
 const router = express.Router();
 const User = require("../models/user.model");
@@ -46,7 +46,9 @@ router.post("/add", jwtAuthMiddleware, async (req, res) => {
 
 router.get("/view", jwtAuthMiddleware, async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
+    const blogs = await Blog.find()
+      .populate("author", "username")
+      .sort({ createdAt: -1 });
     res.render("view", { blogs });
   } catch (error) {
     res.status(500).send("Server error");

@@ -22,7 +22,8 @@
         </p>
 
         <div class="blog-meta">
-          <span><strong>By:</strong> <%= blog.username || "Anonymous" %></span>
+     <span><strong>By:</strong> <%= blog.author.username %></span>
+
           <span><strong>Date:</strong> <%= blog.createdAt.toDateString() %></span>
         </div>
 
