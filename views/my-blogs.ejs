@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Blogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Heading -->
+  <div class="page-heading">
+    <h1>Your Blog Posts</h1>
+  </div>
+
+  <% if (blogs.length > 0) { %>
+    <div class="blog-container">
+      <% blogs.forEach(blog => { %>
+        <div class="blog-card">
+          <h3><%= blog.title %></h3>
+          <p class="blog-snippet">
+            <%= blog.body.length > 120 ? blog.body.slice(0, 120) + "..." : blog.body %>
+          </p>
+
+          <div class="blog-meta">
+            <span><strong>Date:</strong> <%= blog.createdAt.toDateString() %></span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 0.5rem;">
+            <a href="/blogs/<%= blog._id %>" class="read-more">Read More</a>
+
+            <a href="/blogs/edit/<%= blog._id %>" title="Edit" class="action-icon">
+              <i class="fas fa-pen"></i>
+            </a>
+
+            <form action="/blogs/delete/<%= blog._id %>" method="POST" style="display: inline;">
+              <button type="submit" title="Delete" class="action-icon delete-btn">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p>You haven't written any blogs yet.</p>
+  <% } %>
+</body>
+</html>
+
+

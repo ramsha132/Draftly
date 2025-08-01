@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Create Blog</title>
+      <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <h1>Create a New Blog Post</h1>
+
+    <form action="/add" method="POST">
+      <label for="title">Title:</label><br />
+      <input type="text" name="title" required /><br /><br />
+
+      <label for="body">Content:</label><br />
+      <textarea name="body" rows="10" cols="30" required></textarea><br /><br />
+
+      <label for="tags">Tags (comma-separated):</label><br />
+      <input type="text" name="tags" /><br /><br />
+
+      <button type="submit">Create Blog</button>
+    </form>
+
+    <br />
+    <a href="/">Back to Home</a>
+  </body>
+</html>

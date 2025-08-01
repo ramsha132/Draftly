@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Blogs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Centered heading on top -->
+  <div class="page-heading">
+    <h1>All Blog Posts</h1>
+  </div>
+
+  <!-- Blog cards -->
+  <div class="blog-container">
+    <% blogs.forEach(blog => { %>
+      <div class="blog-card">
+        <h3><%= blog.title %></h3>
+        <p class="blog-snippet">
+          <%= blog.body.length > 120 ? blog.body.slice(0, 120) + "..." : blog.body %>
+        </p>
+
+        <div class="blog-meta">
+          <span><strong>By:</strong> <%= blog.username || "Anonymous" %></span>
+          <span><strong>Date:</strong> <%= blog.createdAt.toDateString() %></span>
+        </div>
+
+        <a href="/blogs/<%= blog._id %>" class="read-more">Read More</a>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>
+
