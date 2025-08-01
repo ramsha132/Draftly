@@ -10,12 +10,10 @@ const {
   generateToken,
 } = require("../middlewares/requireAuth");
 
-//  GET the  Register Page
 router.get("/register", (req, res) => {
   res.render("register", { error: null });
 });
 
-//  POST Register Logic
 router.post("/register", async (req, res) => {
   try {
     console.log("REQ BODY:", req.body); // for Checcking error only
@@ -36,11 +34,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 router.get("/login", (req, res) => {
   res.render("login");
 });
-
 
 router.post("/login", async (req, res) => {
   try {
@@ -52,39 +48,34 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).send("Invalid email or password");
 
-// to create a Token
+    // to create a Token
     const token = jwt.sign(
-      {   _id: user._id, email: user.email },
+      { _id: user._id, email: user.email },
       process.env.JWT_SECRET,
       {
         expiresIn: "1h",
       }
     );
 
-    // setting the token  as cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: false, // to set to true in production with HTTPS
       sameSite: "strict",
-      maxAge: 3600000, // 1 hour in ms
+      maxAge: 3600000, // its means 1 hour
     });
 
-    
-    res.send(" message: Welcome back" );
+    res.send(" message: Welcome back");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
   }
 });
 
-
-
-
 router.get("/my-blogs", jwtAuthMiddleware, async (req, res) => {
   try {
-    const userId = req.user.id;
-console.log( userId)
-
+    const userId = req.user._id;
+    console.log(userId);
+    const user = await User.findById(req.user.id);
     const myBlogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
 
     res.render("my-blogs", { blogs: myBlogs }); // Render EJS view with user's blogs
@@ -94,8 +85,69 @@ console.log( userId)
   }
 });
 
+router.post("/blogs/delete/:id", jwtAuthMiddleware, async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.status(404).send("Blog not found");
 
+    if (blog.author.toString() !== req.user._id) {
+      return res.status(403).send("Not allowed to delete this blog");
+    }
 
+    await blog.deleteOne();
+    res.redirect("/my-blogs");
+  } catch (err) {
+    res.status(500).send("Error deleting blog");
+  }
+});
 
+router.put("/blogs/edit/:id", jwtAuthMiddleware, async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.status(404).send("Blog not found");
+
+    if (blog.author.toString() !== req.user._id) {
+      return res.status(403).send("Not allowed to edit this blog");
+    }
+
+    const { title, body } = req.body;
+    await blog.updateOne({ title, body });
+    res.redirect("/my-blogs");
+  } catch (error) {
+    res.status(500).send("Error Updating blog");
+  }
+});
+
+router.get("/blogs/edit/:id", jwtAuthMiddleware, async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.status(404).send("Blog not found");
+
+    if (blog.author.toString() !== req.user._id) {
+      return res.status(403).send("Not allowed to edit this blog");
+    }
+
+    res.render("edit", { blog }); // Make sure edit-blog.ejs exists
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+
+router.post("/blogs/edit/:id", jwtAuthMiddleware, async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.status(404).send("Blog not found");
+
+    if (blog.author.toString() !== req.user._id) {
+      return res.status(403).send("Not allowed to edit this blog");
+    }
+
+    const { title, body } = req.body;
+    await blog.updateOne({ title, body });
+    res.redirect("/my-blogs");
+  } catch (error) {
+    res.status(500).send("Error deleting blog");
+  }
+});
 
 module.exports = router;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= blog.title %> | Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <div class="view-wrapper">
+    <div class="view-box">
+      <h1 class="view-title"><%= blog.title %></h1>
+
+      <div class="view-meta">
+        <p><strong>Author:</strong> <%= blog.author?.username || "Unknown" %></p>
+        <p><strong>Posted:</strong> <%= blog.createdAt.toDateString() %></p>
+      </div>
+
+      <div class="view-content">
+        <p><%= blog.body %></p>
+      </div>
+
+      <a href="/view" class="view-back">← Back</a>
+    </div>
+  </div>
+
+</body>
+</html>

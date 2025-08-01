@@ -15,46 +15,60 @@ const {
   generateToken,
 } = require("../middlewares/requireAuth");
 
-
-
-router.get("/add",jwtAuthMiddleware,  (req, res) => {
+router.get("/add", jwtAuthMiddleware, (req, res) => {
   res.render("create-blog");
 });
 
 router.post("/add", jwtAuthMiddleware, async (req, res) => {
   try {
     const { title, body } = req.body;
-        console.log("req.user:", req.user)
-        const userId = req.user.id;
-  console.log(userId)
-    const newBlog = new Blog({ title, body , author: userId, });
-  
+
+    if (!title || !body) {
+      return res.status(400).send("Title and body are required");
+    }
+
+    const userId = req.user._id;
+
+    const newBlog = new Blog({
+      title,
+      body,
+      author: userId,
+    });
+
     await newBlog.save();
-    res.status(200).send(" Blog Added successfully");
+    console.log(userId);
+    res.redirect("/my-blogs");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
   }
 });
 
-
-router.get('/view', jwtAuthMiddleware , async (req,res)=>{
-
-    try {
-        const blogs = await Blog.find().sort({ createdAt: -1 });
-            res.render('view', { blogs });
-    } catch (error) {
-            res.status(500).send("Server error");
+router.get("/view", jwtAuthMiddleware, async (req, res) => {
+  try {
+    const blogs = await Blog.find().sort({ createdAt: -1 });
+    res.render("view", { blogs });
+  } catch (error) {
+    res.status(500).send("Server error");
   }
-   
-})
+});
 router.get("/test-protected", jwtAuthMiddleware, (req, res) => {
   res.send(`You are logged in as ${req.user.email}`);
 });
 
-router.put('/update' , (req,res)=>{
+router.put("/update", (req, res) => {});
 
+router.get("/blogs/:id", async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id).populate("author");
 
-})
+    if (!blog) return res.status(404).send("Blog not found");
+
+    res.render("readmore", { blog }); // my readmore.ejs
+  } catch (err) {
+    console.error("Error fetching blog:", err);
+    res.status(500).send("Server error");
+  }
+});
 
 module.exports = router;

@@ -7,9 +7,12 @@ const blogSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User', 
+    require:true
   }
 });
+
+
 
 module.exports = mongoose.model('Blog', blogSchema);
 

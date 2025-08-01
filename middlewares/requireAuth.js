@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const jwtAuthMiddleware = (req, res, next) => {
-  const token = req.cookies.token; // ✅ CORRECT for cookie-based auth
+  const token = req.cookies.token; // needed for cookie based
 
   if (!token) return res.status(401).json({ error: "Token Not Found" });
 
